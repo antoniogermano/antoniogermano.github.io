@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Antonio Germano — Apple Platforms Engineer. iOS, macOS, watchOS & visionOS developer crafting exceptional experiences." />
+  <title>Antonio Germano — Apple Platforms Engineer</title>
+  <style>
+    /* ─── Reset & Base ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #ffffff;
+      --bg-secondary: #f5f5f7;
+      --bg-card:      #ffffff;
+      --text:         #1d1d1f;
+      --text-secondary: #6e6e73;
+      --accent:       #0071e3;
+      --accent-hover: #0077ed;
+      --border:       rgba(0,0,0,0.1);
+      --nav-bg:       rgba(255,255,255,0.72);
+      --shadow:       0 4px 24px rgba(0,0,0,0.08);
+      --shadow-hover: 0 12px 40px rgba(0,0,0,0.14);
+      --radius:       18px;
+      --radius-sm:    12px;
+      --transition:   0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:           #000000;
+        --bg-secondary: #1c1c1e;
+        --bg-card:      #2c2c2e;
+        --text:         #f5f5f7;
+        --text-secondary: #98989d;
+        --accent:       #2997ff;
+        --accent-hover: #3aa0ff;
+        --border:       rgba(255,255,255,0.1);
+        --nav-bg:       rgba(0,0,0,0.72);
+        --shadow:       0 4px 24px rgba(0,0,0,0.4);
+        --shadow-hover: 0 12px 40px rgba(0,0,0,0.6);
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                   "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── Navigation ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 52px;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      transition: background var(--transition);
+    }
+
+    .nav-logo {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity var(--transition);
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity var(--transition);
+    }
+    .nav-cta:hover { opacity: 0.8; }
+
+    /* ─── Hamburger (mobile) ──────────────────────────────────────── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .nav-cta   { display: none; }
+      .nav-toggle { display: flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 52px;
+        left: 0;
+        right: 0;
+        background: var(--nav-bg);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        padding: 16px 24px 24px;
+        border-bottom: 1px solid var(--border);
+        gap: 20px;
+        z-index: 99;
+      }
+    }
+
+    /* ─── Hero ───────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%,
+          rgba(0,113,227,0.18) 0%,
+          transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 80%,
+          rgba(94,92,230,0.12) 0%,
+          transparent 60%),
+        radial-gradient(ellipse 50% 50% at 10% 70%,
+          rgba(48,209,88,0.08) 0%,
+          transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #30d158;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(1.4); opacity: 0.7; }
+    }
+
+    .hero-name {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      margin-bottom: 16px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero-name span {
+      background: linear-gradient(135deg, #0071e3 0%, #5e5ce6 50%, #bf5af2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: -0.01em;
+      margin-bottom: 40px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all var(--transition);
+      cursor: pointer;
+      border: none;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,113,227,0.35);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      animation: fadeIn 1s 1s ease both;
+    }
+
+    .scroll-indicator {
+      width: 24px;
+      height: 38px;
+      border: 2px solid var(--text-secondary);
+      border-radius: 12px;
+      position: relative;
+    }
+    .scroll-indicator::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 8px;
+      background: var(--text-secondary);
+      border-radius: 2px;
+      animation: scrollDot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes scrollDot {
+      0%   { transform: translateX(-50%) translateY(0); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(14px); opacity: 0; }
+    }
+
+    /* ─── Sections ───────────────────────────────────────────────── */
+    section {
+      padding: 100px 24px;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .section-subtitle {
+      font-size: 19px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.6;
+      margin-bottom: 64px;
+    }
+
+    /* ─── About ─────────────────────────────────────────────────── */
+    #about { background: var(--bg-secondary); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    @media (max-width: 800px) {
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .about-avatar {
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 1;
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0071e3 0%, #5e5ce6 50%, #bf5af2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      box-shadow: var(--shadow-hover);
+    }
+
+    .avatar-initials {
+      font-size: 80px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: -0.04em;
+    }
+
+    .about-text h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .about-text p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .skill-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    /* ─── Stats Bar ──────────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px;
+    }
+
+    .stats-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #0071e3, #5e5ce6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ─── Projects ───────────────────────────────────────────────── */
+    #projects { background: var(--bg); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all var(--transition);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .project-header {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+    }
+
+    .project-gradient-1 { background: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%); }
+    .project-gradient-2 { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); }
+    .project-gradient-3 { background: linear-gradient(135deg, #30d158 0%, #34aadc 100%); }
+    .project-gradient-4 { background: linear-gradient(135deg, #bf5af2 0%, #ff6b6b 100%); }
+    .project-gradient-5 { background: linear-gradient(135deg, #ffd60a 0%, #ff9f0a 100%); }
+    .project-gradient-6 { background: linear-gradient(135deg, #34aadc 0%, #5e5ce6 100%); }
+
+    .project-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-platform {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .platform-badge {
+      background: var(--bg-secondary);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+    }
+
+    .project-name {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: gap var(--transition);
+    }
+    .project-link:hover { gap: 10px; }
+
+    .project-link svg {
+      transition: transform var(--transition);
+    }
+    .project-link:hover svg { transform: translateX(4px); }
+
+    /* ─── Company ────────────────────────────────────────────────── */
+    #company { background: var(--bg-secondary); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .service-icon-blue   { background: rgba(0,113,227,0.12); }
+    .service-icon-purple { background: rgba(94,92,230,0.12); }
+    .service-icon-green  { background: rgba(48,209,88,0.12); }
+    .service-icon-pink   { background: rgba(255,55,95,0.12); }
+
+    .service-name {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── Testimonials ───────────────────────────────────────────── */
+    #testimonials { background: var(--bg); }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .testimonial-stars {
+      color: #ffd60a;
+      font-size: 18px;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .testimonial-quote {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .author-info strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .author-info span {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Contact ────────────────────────────────────────────────── */
+    #contact {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    #contact .section-eyebrow { color: var(--accent); }
+    #contact .section-subtitle { color: rgba(255,255,255,0.6); }
+
+    @media (prefers-color-scheme: dark) {
+      #contact { background: #1c1c1e; }
+      #contact .section-subtitle { color: rgba(200,200,200,0.6); }
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-decoration: none;
+      color: inherit;
+      transition: all var(--transition);
+    }
+
+    .contact-link:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateX(4px);
+    }
+
+    .contact-link-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+
+    .contact-link-info strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .contact-link-info span {
+      font-size: 13px;
+      opacity: 0.6;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 15px;
+      color: inherit;
+      transition: border-color var(--transition);
+      outline: none;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group textarea { min-height: 120px; }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Animations ─────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Apple-style divider ────────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Navigation ─────────────────────────────────────────── -->
+  <nav role="navigation" aria-label="Main">
+    <a class="nav-logo" href="#hero">Antonio Germano</a>
+    <ul class="nav-links" id="nav-links-list">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#company">Services</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Get in touch →</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links-list">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ─── Hero ───────────────────────────────────────────────── -->
+  <section id="hero" aria-label="Introduction">
+    <div class="hero-gradient" aria-hidden="true"></div>
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot" aria-hidden="true"></span>
+      Available for new projects
+    </div>
+
+    <h1 class="hero-name">
+      <span>Antonio</span><br>Germano
+    </h1>
+
+    <p class="hero-title">Apple Platforms Engineer &amp; Entrepreneur</p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">View Projects</a>
+      <a class="btn btn-secondary" href="#contact">Work Together</a>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="scroll-indicator"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── Stats Bar ───────────────────────────────────────────── -->
+  <div class="stats-bar reveal">
+    <div class="stats-inner">
+      <div>
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div>
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Apps Shipped</div>
+      </div>
+      <div>
+        <div class="stat-number">4</div>
+        <div class="stat-label">Apple Platforms</div>
+      </div>
+      <div>
+        <div class="stat-number">1M+</div>
+        <div class="stat-label">Users Worldwide</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── About ──────────────────────────────────────────────── -->
+  <section id="about" aria-labelledby="about-title">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-avatar reveal" aria-hidden="true">
+          <span class="avatar-initials">AG</span>
+        </div>
+        <div class="about-text reveal">
+          <p class="section-eyebrow">About Me</p>
+          <h2 id="about-title">Crafting exceptional Apple experiences</h2>
+          <p>
+            I'm a passionate Apple platforms engineer with over a decade of experience
+            building apps that people love. From the very first line of Swift to
+            App Store launch — I care deeply about every detail.
+          </p>
+          <p>
+            Specializing in iOS, macOS, watchOS, and visionOS development, I combine
+            technical excellence with a designer's eye to deliver software that feels
+            truly at home on Apple's platforms.
+          </p>
+          <div class="skills-list" aria-label="Skills">
+            <span class="skill-chip">Swift</span>
+            <span class="skill-chip">SwiftUI</span>
+            <span class="skill-chip">UIKit</span>
+            <span class="skill-chip">AppKit</span>
+            <span class="skill-chip">Core Data</span>
+            <span class="skill-chip">CloudKit</span>
+            <span class="skill-chip">ARKit</span>
+            <span class="skill-chip">RealityKit</span>
+            <span class="skill-chip">StoreKit</span>
+            <span class="skill-chip">Combine</span>
+            <span class="skill-chip">Swift Concurrency</span>
+            <span class="skill-chip">Instruments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ─── Projects ───────────────────────────────────────────── -->
+  <section id="projects" aria-labelledby="projects-title">
+    <div class="section-inner">
+      <p class="section-eyebrow reveal">Featured Work</p>
+      <h2 class="section-title reveal" id="projects-title">Apps built<br>for every Apple platform</h2>
+      <p class="section-subtitle reveal">
+        Each project is crafted with attention to detail, performance, and the
+        Human Interface Guidelines that define great Apple software.
+      </p>
+
+      <div class="projects-grid">
+
+        <article class="project-card reveal">
+          <div class="project-header project-gradient-1" aria-hidden="true">📱</div>
+          <div class="project-body">
+            <div class="project-platform">
+              <span class="platform-badge">iOS</span>
+              <span class="platform-badge">iPadOS</span>
+            </div>
+            <h3 class="project-name">FocusFlow</h3>
+            <p class="project-desc">
+              A productivity app that uses intelligent scheduling and Focus Modes
+              to help users achieve deep work. Built with SwiftUI and backed by
+              CloudKit for seamless iCloud sync.
+            </p>
+            <a class="project-link" href="#" aria-label="Learn more about FocusFlow">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-header project-gradient-2" aria-hidden="true">⌚</div>
+          <div class="project-body">
+            <div class="project-platform">
+              <span class="platform-badge">watchOS</span>
+              <span class="platform-badge">iOS</span>
+            </div>
+            <h3 class="project-name">HeartBeat</h3>
+            <p class="project-desc">
+              Real-time heart rate monitoring and HRV analysis on Apple Watch.
+              Features beautiful complications, HealthKit integration, and rich
+              workout tracking with personalized insights.
+            </p>
+            <a class="project-link" href="#" aria-label="Learn more about HeartBeat">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-header project-gradient-3" aria-hidden="true">🖥️</div>
+          <div class="project-body">
+            <div class="project-platform">
+              <span class="platform-badge">macOS</span>
+            </div>
+            <h3 class="project-name">WorkSpace Pro</h3>
+            <p class="project-desc">
+              A native macOS app for developers to manage projects, snippets, and
+              documentation. Leverages AppKit for a truly native experience with
+              full keyboard navigation and macOS menu bar integration.
+            </p>
+            <a class="project-link" href="#" aria-label="Learn more about WorkSpace Pro">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-header project-gradient-4" aria-hidden="true">🥽</div>
+          <div class="project-body">
+            <div class="project-platform">
+              <span class="platform-badge">visionOS</span>
+            </div>
+            <h3 class="project-name">SpatialCanvas</h3>
+            <p class="project-desc">
+              An immersive creative app for Apple Vision Pro that lets artists
+              paint and sculpt in 3D space using RealityKit and hand tracking.
+              One of the first spatial computing creative tools.
+            </p>
+            <a class="project-link" href="#" aria-label="Learn more about SpatialCanvas">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-header project-gradient-5" aria-hidden="true">🎵</div>
+          <div class="project-body">
+            <div class="project-platform">
+              <span class="platform-badge">iOS</span>
+              <span class="platform-badge">macOS</span>
+            </div>
+            <h3 class="project-name">Tuner Studio</h3>
+            <p class="project-desc">
+              Professional audio tuner and metronome for musicians. Uses AVFoundation
+              for precise pitch detection and delivers a gorgeous UI that adapts
+              perfectly across iPhone, iPad, and Mac.
+            </p>
+            <a class="project-link" href="#" aria-label="Learn more about Tuner Studio">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-header project-gradient-6" aria-hidden="true">📊</div>
+          <div class="project-body">
+            <div class="project-platform">
+              <span class="platform-badge">iOS</span>
+              <span class="platform-badge">iPadOS</span>
+              <span class="platform-badge">macOS</span>
+            </div>
+            <h3 class="project-name">FinanceKit Insights</h3>
+            <p class="project-desc">
+              Personal finance dashboard powered by Apple's FinanceKit. Beautiful
+              charts built with Swift Charts, Shortcuts integration, and a Live
+              Activity that keeps your budget visible at a glance.
+            </p>
+            <a class="project-link" href="#" aria-label="Learn more about FinanceKit Insights">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ─── Company / Services ─────────────────────────────────── -->
+  <section id="company" aria-labelledby="company-title">
+    <div class="section-inner">
+      <p class="section-eyebrow reveal">Services</p>
+      <h2 class="section-title reveal" id="company-title">Full-cycle Apple<br>platform development</h2>
+      <p class="section-subtitle reveal">
+        From concept to App Store — I work with startups and enterprises to
+        design and build outstanding Apple-native software.
+      </p>
+
+      <div class="services-grid">
+
+        <div class="service-card reveal">
+          <div class="service-icon service-icon-blue" aria-hidden="true">📱</div>
+          <h3 class="service-name">iOS &amp; iPadOS Development</h3>
+          <p class="service-desc">
+            Native iPhone and iPad apps built with SwiftUI and UIKit. Optimized
+            for every screen size, with deep system integrations — Widgets, 
+            Live Activities, Shortcuts, and more.
+          </p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-icon service-icon-purple" aria-hidden="true">🖥️</div>
+          <h3 class="service-name">macOS Development</h3>
+          <p class="service-desc">
+            Powerful Mac apps using AppKit and SwiftUI that feel at home on
+            macOS — with full keyboard support, menu bar extras, and tight
+            macOS system integration.
+          </p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-icon service-icon-green" aria-hidden="true">🥽</div>
+          <h3 class="service-name">visionOS &amp; Spatial Computing</h3>
+          <p class="service-desc">
+            Pioneering spatial experiences for Apple Vision Pro using
+            RealityKit, Reality Composer Pro, and SwiftUI Volumes for the
+            next generation of human-computer interaction.
+          </p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-icon service-icon-pink" aria-hidden="true">🔍</div>
+          <h3 class="service-name">App Audits &amp; Consulting</h3>
+          <p class="service-desc">
+            In-depth code reviews, performance profiling with Instruments,
+            and architecture consulting to help your team level up and
+            ship with confidence.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ─── Testimonials ───────────────────────────────────────── -->
+  <section id="testimonials" aria-labelledby="testimonials-title">
+    <div class="section-inner">
+      <p class="section-eyebrow reveal">Testimonials</p>
+      <h2 class="section-title reveal" id="testimonials-title">Trusted by builders<br>and founders</h2>
+
+      <div class="testimonials-grid">
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+          <p class="testimonial-quote">
+            "Antonio has an uncanny ability to translate complex requirements into
+             apps that feel inevitable — like they could only exist on Apple's platforms."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: linear-gradient(135deg,#0071e3,#5e5ce6);">S</div>
+            <div class="author-info">
+              <strong>Sarah Mitchell</strong>
+              <span>CEO, Northlight Labs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+          <p class="testimonial-quote">
+            "The attention to detail is extraordinary. Every animation, every
+             transition — it all feels crafted by someone who genuinely loves Apple software."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: linear-gradient(135deg,#30d158,#34aadc);">M</div>
+            <div class="author-info">
+              <strong>Marco Ricci</strong>
+              <span>Head of Product, Bloom App</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+          <p class="testimonial-quote">
+            "Shipped our visionOS app in record time without compromising quality.
+             Antonio's expertise in spatial computing gave us a genuine competitive edge."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: linear-gradient(135deg,#bf5af2,#ff6b6b);">L</div>
+            <div class="author-info">
+              <strong>Laura Fernández</strong>
+              <span>CTO, SpaceForm Studios</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Contact ────────────────────────────────────────────── -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="section-inner">
+      <div class="contact-grid">
+        <div>
+          <p class="section-eyebrow reveal">Get In Touch</p>
+          <h2 class="section-title reveal" id="contact-title" style="color: inherit;">Let's build something<br>great together.</h2>
+          <p class="section-subtitle reveal" style="margin-bottom: 40px;">
+            Whether you have a new app idea or need help taking an existing one
+            further — I'd love to hear from you.
+          </p>
+
+          <div class="contact-links reveal">
+            <a class="contact-link" href="mailto:hello@antoniogermano.dev">
+              <span class="contact-link-icon" aria-hidden="true">✉️</span>
+              <div class="contact-link-info">
+                <strong>Email</strong>
+                <span>hello@antoniogermano.dev</span>
+              </div>
+            </a>
+            <a class="contact-link" href="https://github.com/antoniogermano" target="_blank" rel="noopener noreferrer">
+              <span class="contact-link-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                </svg>
+              </span>
+              <div class="contact-link-info">
+                <strong>GitHub</strong>
+                <span>github.com/antoniogermano</span>
+              </div>
+            </a>
+            <a class="contact-link" href="https://twitter.com/antoniogermano" target="_blank" rel="noopener noreferrer">
+              <span class="contact-link-icon" aria-hidden="true">𝕏</span>
+              <div class="contact-link-info">
+                <strong>X (Twitter)</strong>
+                <span>@antoniogermano</span>
+              </div>
+            </a>
+            <a class="contact-link" href="https://www.linkedin.com/in/antoniogermano" target="_blank" rel="noopener noreferrer">
+              <span class="contact-link-icon" aria-hidden="true">in</span>
+              <div class="contact-link-info">
+                <strong>LinkedIn</strong>
+                <span>linkedin.com/in/antoniogermano</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <form class="contact-form" action="mailto:hello@antoniogermano.dev" method="post" enctype="text/plain">
+            <div class="form-group">
+              <label for="contact-name">Your name</label>
+              <input type="text" id="contact-name" name="name" placeholder="Jane Appleseed" required />
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email address</label>
+              <input type="email" id="contact-email" name="email" placeholder="jane@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" name="message" placeholder="Tell me about your project…" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#company">Services</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/antoniogermano" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer-copy">
+        &copy; <span id="year"></span> Antonio Germano. Made with ♥ for Apple platforms.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Year ──────────────────────────────────────────────────
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ─── Scroll reveal ─────────────────────────────────────────
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+    // ─── Staggered cards ───────────────────────────────────────
+    document.querySelectorAll('.projects-grid .project-card, .services-grid .service-card, .testimonials-grid .testimonial-card')
+      .forEach((card, i) => {
+        card.style.transitionDelay = `${(i % 3) * 0.1}s`;
+      });
+
+    // ─── Nav mobile toggle ─────────────────────────────────────
+    const toggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        navLinks.classList.toggle('open', !expanded);
+      });
+    }
+
+    // ─── Close mobile nav on link click ────────────────────────
+    document.querySelectorAll('.nav-links a').forEach((link) => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>
